@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paraform Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f0e8;
+    --ink: #1a1a1a;
+    --muted: #6b6660;
+    --highlight: #fff066;
+    --accent: #ff5a1f;
+    --card: #ffffff;
+    --shadow: 4px 4px 0 #1a1a1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0);
+    background-size: 24px 24px;
+    color: var(--ink);
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+  .container { max-width: 760px; width: 100%; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(44px, 7vw, 72px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin-bottom: 18px;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lead {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    line-height: 1.4;
+    margin-bottom: 36px;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 560px;
+  }
+  .parts {
+    display: grid;
+    gap: 16px;
+  }
+  .part {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    box-shadow: var(--shadow);
+    padding: 24px 28px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+  }
+  .part:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--accent);
+  }
+  .part-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 0.9;
+    color: var(--accent);
+  }
+  .part-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .part-desc {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .part-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    color: var(--ink);
+  }
+  .meta {
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .meta strong { color: var(--ink); }
+  @media (max-width: 600px) {
+    .part { grid-template-columns: auto 1fr; }
+    .part-arrow { display: none; }
+    .part-num { font-size: 40px; }
+    .part-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="kicker">Paraform · Case Study · May 2026</div>
+  <h1>Who actually <em>wins</em> on Paraform —<br>and which candidates <em>fit</em>.</h1>
+  <p class="lead">Two parts. One thesis: portable advantage beats pedigree on both sides of the marketplace.</p>
+
+  <div class="parts">
+    <a class="part" href="part1_recruiter_icp.html">
+      <div class="part-num">01</div>
+      <div>
+        <div class="part-title">The recruiter ICP</div>
+        <div class="part-desc">Data-first analysis of 21 featured recruiters · 4 traits, 4 archetypes · 2 GTM moves for the recruiter side.</div>
+      </div>
+      <div class="part-arrow">→</div>
+    </a>
+    <a class="part" href="part2_candidate_eval.html">
+      <div class="part-num">02</div>
+      <div>
+        <div class="part-title">The candidate pipeline</div>
+        <div class="part-desc">30 candidates · 9 actions this week · validated against 5 already-hired profiles · stage-aware next moves.</div>
+      </div>
+      <div class="part-arrow">→</div>
+    </a>
+  </div>
+
+  <div class="meta">
+    <strong>Sources</strong> · Cowork pipeline scrape · 21 Paraform recruiter blog stories · Slack updates · live JD · TechCrunch &amp; Axios press<br>
+    <strong>Read time</strong> · ~20 minutes total · ~10 minutes each
+  </div>
+</div>
+</body>
+</html>

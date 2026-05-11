@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 1 · Recruiter ICP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f0e8;
+    --ink: #1a1a1a;
+    --muted: #6b6660;
+    --highlight: #fff066;
+    --accent: #ff5a1f;
+    --good: #1f7a3a;
+    --bad: #b53227;
+    --card: #ffffff;
+    --shadow: 4px 4px 0 #1a1a1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0);
+    background-size: 24px 24px;
+    color: var(--ink);
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 0 24px 80px;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding-top: 32px; }
+
+  /* STICKY NAV */
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    margin: 0 -24px 32px;
+    padding: 12px 24px;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topnav .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-right: 8px;
+  }
+  .topnav .brand strong { color: var(--ink); }
+  .topnav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+  .topnav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+  }
+  .topnav a:hover { border-color: var(--ink); background: var(--highlight); }
+
+  /* MASTHEAD */
+  .masthead {
+    border: 2px solid var(--ink);
+    background: var(--card);
+    padding: 28px 36px;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow);
+  }
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .masthead h1 em { font-style: italic; color: var(--accent); }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .method-line {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .method-line strong { color: var(--ink); }
+
+  /* DIRECTORY */
+  .directory {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    padding: 20px 28px;
+    margin-bottom: 56px;
+    box-shadow: var(--shadow);
+  }
+  .directory-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .directory ol { list-style: none; counter-reset: dir; }
+  .directory li {
+    counter-increment: dir;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--muted);
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .directory li:last-child { border-bottom: none; }
+  .directory li::before {
+    content: counter(dir, decimal-leading-zero) ".";
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .directory li a {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1.2;
+    border-bottom: 1.5px solid transparent;
+    transition: all 0.15s;
+  }
+  .directory li a:hover { border-bottom-color: var(--accent); }
+  .directory li a em { font-style: italic; color: var(--accent); }
+
+  /* SECTIONS */
+  .section { margin-bottom: 64px; scroll-margin-top: 80px; }
+  .sec-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+  }
+  .sec-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(28px, 3.8vw, 42px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 12px;
+  }
+  .sec-title em { font-style: italic; color: var(--accent); }
+  .sec-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 28px;
+    font-size: 16px;
+  }
+
+  /* OPENING — short and punchy */
+  .opener {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(22px, 2.8vw, 30px);
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    max-width: 760px;
+    margin-bottom: 28px;
+  }
+  .opener .hl { background: var(--highlight); padding: 0 6px; font-weight: 700; font-style: italic; }
+
+  /* DATA TABLE — tighter */
+  .data-table-wrap {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+  table.rec {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.rec th, table.rec td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e0d6;
+    vertical-align: middle;
+  }
+  table.rec thead th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  table.rec tr:nth-child(even) { background: #faf6ed; }
+  table.rec tr.complete { background: #fff8d8 !important; }
+  table.rec tr.outlier { background: #fef5f3 !important; }
+  table.rec .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-weight: 600;
+    width: 26px;
+  }
+  table.rec .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.15;
+  }
+  table.rec .name a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1.5px dotted var(--accent);
+  }
+  table.rec .name a:hover { background: var(--highlight); }
+  table.rec .meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  table.rec .hard-data {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.3;
+  }
+  table.rec .hard-data b { background: var(--highlight); padding: 0 3px; font-style: normal; font-weight: 700; }
+  table.rec .tag-cell { line-height: 1.6; }
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    margin: 1px 2px 1px 0;
+    border: 1.5px solid var(--ink);
+    background: var(--card);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .tag.lead {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+  }
+  .tag.missing {
+    background: #f5d1cd;
+    border-color: var(--bad);
+    color: var(--bad);
+    font-weight: 600;
+  }
+
+  .table-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .table-note .swatch {
+    display: inline-block;
+    padding: 2px 8px;
+    margin-right: 6px;
+    border: 1px solid var(--ink);
+  }
+  .table-note .swatch.complete { background: #fff8d8; }
+  .table-note .swatch.outlier { background: #fef5f3; }
+
+  /* PULL QUOTE — big editorial blocks */
+  .pullquote {
+    margin: 36px 0;
+    padding: 24px 32px;
+    border-left: 4px solid var(--accent);
+    background: transparent;
+  }
+  .pullquote .quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .pullquote .quote .hl { background: var(--highlight); font-style: normal; padding: 0 4px; font-weight: 600; }
+  .pullquote .attr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .pullquote .attr strong { color: var(--ink); text-transform: uppercase; letter-spacing: 0.1em; }
+  .pullquote .attr a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+  .pullquote .attr a:hover { background: var(--highlight); }
+
+  /* TRAITS — broken symmetry: 4 cards but different sizes */
+  .traits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 720px) { .traits { grid-template-columns: 1fr; } }
+  .trait {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    padding: 22px 26px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .trait.wide { grid-column: 1 / -1; }
+  .trait .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .trait h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.05;
+    margin-bottom: 8px;
+    letter-spacing: -0.015em;
+  }
+  .trait h4 em { font-style: italic; color: var(--accent); }
+  .trait .def {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    line-height: 1.35;
+  }
+  .trait .ev {
+    border-top: 1px dashed var(--muted);
+    padding-top: 12px;
+    list-style: none;
+    padding-left: 0;
+  }
+  .trait .ev li {
+    list-style: none;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 5px 0;
+    padding-left: 22px;
+    position: relative;
+  }
+  .trait .ev li::before {
+    content: "→";
+    color: var(--accent);
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 5px;
+  }
+  .trait .ev li a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 1.5px dotted var(--accent);
+  }
+  .trait .ev li a:hover { background: var(--highlight); }
+
+  /* EDGE CASE — Shantanu */
+  .edge {
+    background: var(--card);
+    border: 2px solid var(--accent);
+    box-shadow: 4px 4px 0 var(--accent);
+    padding: 28px 32px;
+  }
+  .edge .tag-top {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--paper);
+    background: var(--accent);
+    padding: 3px 8px;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  .edge h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(24px, 3vw, 30px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .edge h3 em { font-style: italic; color: var(--accent); }
+  .edge p { font-size: 15px; line-height: 1.55; margin-bottom: 12px; }
+  .edge p b { background: var(--highlight); padding: 0 3px; font-weight: 600; }
+  .edge .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--accent);
+  }
+  @media (max-width: 720px) { .edge .grid { grid-template-columns: 1fr; } }
+  .edge .grid h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .edge .grid p { font-size: 14px; line-height: 1.5; margin-bottom: 0; }
+
+  /* IMPLICATIONS */
+  .so-what {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 36px 40px;
+    border: 2px solid var(--ink);
+    box-shadow: var(--shadow);
+  }
+  .so-what h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 600;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .so-what h3 em { color: var(--highlight); font-style: normal; }
+  .so-what-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 720px) { .so-what-grid { grid-template-columns: 1fr; } }
+  .so-what-item { border-top: 2px solid var(--highlight); padding-top: 12px; }
+  .so-what-item .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--highlight);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+  .so-what-item h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .so-what-item p { font-size: 13.5px; line-height: 1.5; color: rgba(244,240,232,0.85); }
+
+  /* SOURCES — collapsible */
+  .sources {
+    margin-top: 36px;
+    padding: 18px 22px;
+    border: 1.5px dashed var(--ink);
+    background: var(--card);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .sources summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .sources summary::-webkit-details-marker { display: none; }
+  .sources summary strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    display: inline-block;
+  }
+  .sources summary .hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    transition: transform 0.15s;
+  }
+  .sources[open] summary .hint::after {
+    content: " ↑";
+  }
+  .sources[open] summary .hint { color: var(--accent); }
+  .sources[open] summary .hint {
+    content: " (click to collapse)";
+  }
+  .sources ul {
+    list-style: none;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--ink);
+  }
+  .sources li { padding: 3px 0; }
+  .sources li a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+  }
+  .sources li a:hover { background: var(--highlight); }
+  .sources li .who {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-right: 6px;
+  }
+  .sources .method-block {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--ink);
+  }
+  .sources .method-block strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .sources .method-block p {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .sources .method-block p b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ARCHETYPES — sourcing personas */
+  .archetypes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 720px) { .archetypes { grid-template-columns: 1fr; } }
+  .archetype {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    box-shadow: var(--shadow);
+    padding: 22px 26px;
+    position: relative;
+  }
+  .archetype .code {
+    position: absolute;
+    top: -14px;
+    left: 18px;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    letter-spacing: 0.1em;
+    border: 2px solid var(--ink);
+    text-transform: uppercase;
+  }
+  .archetype h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.05;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    letter-spacing: -0.015em;
+  }
+  .archetype h4 em { font-style: italic; color: var(--accent); }
+  .archetype .lead-trait {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .archetype .lead-trait b { color: var(--ink); }
+  .archetype .one-liner {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .archetype .row {
+    border-top: 1px dashed var(--muted);
+    padding-top: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .archetype .row .lab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 700;
+  }
+  .archetype .row a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1.5px dotted var(--accent);
+  }
+  .archetype .row a:hover { background: var(--highlight); }
+  .archetype .pitch {
+    background: #f9f6ee;
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+  .archetype .pitch strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    font-style: normal;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  /* BACK TO TOP */
+  .back-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    box-shadow: 3px 3px 0 var(--accent);
+    transition: transform 0.15s;
+    z-index: 40;
+  }
+  .back-top:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--accent); }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="brand"><strong>Paraform Case</strong> · Part 01</div>
+  <div class="topnav-links">
+    <a href="#directory">Directory</a>
+    <a href="#data">The 12</a>
+    <a href="#traits">4 Traits</a>
+    <a href="#edge">Edge Case</a>
+    <a href="#archetypes">Archetypes</a>
+    <a href="#so-what">Implications</a>
+    <a href="part2_candidate_eval.html">Part 02 →</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <header class="masthead">
+    <div class="masthead-top">
+      <div>
+        <div class="kicker">Paraform Case Study · Part 01</div>
+        <h1>What makes a <em>great</em><br>Paraform recruiter?</h1>
+      </div>
+    </div>
+    <div class="method-line">
+      <strong>METHOD</strong> · Read 21 of 32 featured-recruiter stories on Paraform's blog · tagged each on 4 traits · let the framework emerge from the data, not the other way around. <strong>CONTEXT</strong> · Paraform = Series B, $65M total raised (Mar 2026), 1,000+ companies served, ~$1M+ revenue in year-1. All sources linked inline.
+    </div>
+  </header>
+
+  <section class="directory" id="directory">
+    <div class="directory-label">Directory</div>
+    <ol>
+      <li><a href="#data">The 12 recruiters, tagged</a></li>
+      <li><a href="#traits">4 traits, defined by the data</a></li>
+      <li><a href="#edge">Shantanu — the <em>outlier</em></a></li>
+      <li><a href="#archetypes">4 archetypes Paraform should <em>source against</em></a></li>
+      <li><a href="#so-what">Implications for recruiter GTM</a></li>
+    </ol>
+  </section>
+
+  <!-- 01 THE DATA -->
+  <section class="section" id="data">
+    <div class="sec-num">01 / Evidence</div>
+    <h2 class="sec-title">21 featured recruiters, each tagged on the traits they <em>lead with</em>.</h2>
+
+    <p class="opener">
+      The case asks for an ICP of recruiters. Most answers default to "experienced, well-networked, hard-working." Generic. The data tells a sharper story: <span class="hl">no single profile wins on Paraform.</span> Four distinct traits, multiple paths to top-tier, and one pattern (the career-switcher) that reveals what the platform itself is doing.
+    </p>
+
+    <div class="data-table-wrap">
+      <table class="rec">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Recruiter</th>
+            <th>Niche / Geo</th>
+            <th>Hard data</th>
+            <th>Lead trait & supporting</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="complete">
+            <td class="num">01</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-cheri-made-2-placements-in-1-week-on-paraform" target="_blank" rel="noopener">Cheri Muhle</a></div>
+              <div class="meta">Kruger Recruiting · 15+ yrs</div>
+            </td>
+            <td>US freelance · technical</td>
+            <td class="hard-data"><b>2 placements in 1 week</b> · platform record</td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag">Portable</span>
+              <span class="tag">Speed</span>
+              <span class="tag">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">02</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/uk-recruiter-made-7-hires-in-2-months-on-track-to-be-paraform-s-first-millionaire" target="_blank" rel="noopener">Neil Patel</a></div>
+              <div class="meta">inkorp · own firm</div>
+            </td>
+            <td>UK → US · early-stage tech</td>
+            <td class="hard-data"><b>7 placements in 2 months</b> · $600k yr-1 target</td>
+            <td class="tag-cell">
+              <span class="tag lead">Speed</span>
+              <span class="tag">Portable</span>
+              <span class="tag">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">03</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-an-agency-recruiter-secured-off-market-candidates-more-clients-and-52k-in-bonus-earnings" target="_blank" rel="noopener">Grecia Martinez</a></div>
+              <div class="meta">Recruiting From Scratch</div>
+            </td>
+            <td>US · off-market passives</td>
+            <td class="hard-data"><b>+$52k in one month</b> · Hightouch + Lantern</td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag">Portable</span>
+              <span class="tag">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">04</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-continuity-partners-made-22-hires-in-1-year-through-paraformRetry" target="_blank" rel="noopener">John Keenan</a></div>
+              <div class="meta">Continuity Partners · founder</div>
+            </td>
+            <td>US · boutique agency</td>
+            <td class="hard-data"><b>22 hires in 1 year</b> · 14 of his recruiters on platform</td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+              <span class="tag">HM Empathy</span>
+              <span class="tag">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">05</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/finding-the-right-niche-as-a-recruiter" target="_blank" rel="noopener">Louis Smith</a></div>
+              <div class="meta">Benchmark Group · founder</div>
+            </td>
+            <td>US · hardtech / EV / chips</td>
+            <td class="hard-data">3 rounds in <b>days</b> at Swift Solar</td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+              <span class="tag">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">06</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-marcus-uses-ai-to-be-a-10x-recruiter" target="_blank" rel="noopener">Marcus Dubois</a></div>
+              <div class="meta">ex-Reddit, ex-RevenueCat</div>
+            </td>
+            <td>US · operator credibility</td>
+            <td class="hard-data">Success <b>within 1 month</b> · "10x with AI"</td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+              <span class="tag">Speed</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">07</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/uk-recruiters-breaking-into-us-startups" target="_blank" rel="noopener">Cam Farmer</a></div>
+              <div class="meta">Cabana · own agency</div>
+            </td>
+            <td>UK → US · startups</td>
+            <td class="hard-data">Scaling agency · Palantir, Ramp clients</td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag">Portable</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">08</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/solo-recruiter-uses-paraform-to-grow-recruitment-agency" target="_blank" rel="noopener">Jose</a></div>
+              <div class="meta">Solo</div>
+            </td>
+            <td>LATAM → US · engineering</td>
+            <td class="hard-data">Truewind + others</td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">09</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-one-recruiter-s-paraform-submissions-earned-him-24k-of-extra-income" target="_blank" rel="noopener">Nick</a></div>
+              <div class="meta">Solo · side income</div>
+            </td>
+            <td>US · tech (broad)</td>
+            <td class="hard-data"><b>$24k in one month</b> (side)</td>
+            <td class="tag-cell">
+              <span class="tag lead">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">10</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/areeb-s-rapid-growth-on-paraform-and-making-usd140k-by-putting-candidates-first" target="_blank" rel="noopener">Areeb</a></div>
+              <div class="meta">Solo</div>
+            </td>
+            <td>Finland · founding eng</td>
+            <td class="hard-data">First interview <b>within hours</b> · $140k+ earnings</td>
+            <td class="tag-cell">
+              <span class="tag lead">Speed</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">11</td>
+            <td>
+              <div class="name"><a href="https://talentcollective.substack.com/p/how-paraform-empowers-independent" target="_blank" rel="noopener">Nina Issa</a></div>
+              <div class="meta">Growth League · co-founder</div>
+            </td>
+            <td>US · engineering</td>
+            <td class="hard-data"><b>2 weeks</b> to Sr Fullstack at Spatial Labs</td>
+            <td class="tag-cell">
+              <span class="tag lead">Speed</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">12</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/rfs" target="_blank" rel="noopener">Will Sanders</a></div>
+              <div class="meta">Recruiting From Scratch · Premier Club</div>
+            </td>
+            <td>US · agency (scaled to team)</td>
+            <td class="hard-data"><b>36 placements in 9 months</b> · 2x revenue, no new headcount</td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag">Discipline</span>
+              <span class="tag">Speed</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">13</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-freelance-recruiting-saved-olga-from-burnout" target="_blank" rel="noopener">Olga</a></div>
+              <div class="meta">ex-ClassPass, Goldman, Chief</div>
+            </td>
+            <td>US · in-house defector</td>
+            <td class="hard-data">Full-time transition to Paraform after burnout</td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+              <span class="tag">HM Empathy</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">14</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-anna-malayan-placed-a-founding-marketer-in-10-days" target="_blank" rel="noopener">Anna Malayan</a></div>
+              <div class="meta">AccrueTalent · founder</div>
+            </td>
+            <td>US · ex-IT pivoter</td>
+            <td class="hard-data">Founding Marketer at Pylon in <b>10 days</b></td>
+            <td class="tag-cell">
+              <span class="tag lead">Speed</span>
+              <span class="tag">HM Empathy</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">15</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-katelyn-ewe-made-2-placements-in-1-month" target="_blank" rel="noopener">Katelyn Ewe</a></div>
+              <div class="meta">In-house → agency → freelance</div>
+            </td>
+            <td>US · technical, dream-job-focused</td>
+            <td class="hard-data"><b>2 founding engineers in 1 month</b></td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag">Portable</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">16</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-luis-placed-a-head-of-marketing-in-3-weeks-with-paraform" target="_blank" rel="noopener">Luis Pedemonte</a></div>
+              <div class="meta">20 yrs exec recruiting</div>
+            </td>
+            <td>US · executive search</td>
+            <td class="hard-data">Head of Marketing at Keeper (YC) in <b>3 weeks</b></td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+              <span class="tag">HM Empathy</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">17</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/ken-smith-makes-more-hires" target="_blank" rel="noopener">Ken Smith</a></div>
+              <div class="meta">Rincon Talent · 25 yrs · husband-wife biz</div>
+            </td>
+            <td>US · SaaS / Web3 / AI/ML</td>
+            <td class="hard-data">Pure-sourcing model on Agave roles</td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+              <span class="tag">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">18</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/hustle-hunters-paraform-review" target="_blank" rel="noopener">Nikki Adamson</a></div>
+              <div class="meta">Hustle Hunters · DEIB-focused</div>
+            </td>
+            <td>US · early-stage, values-aligned</td>
+            <td class="hard-data">Founding engineer at Letter AI in <b>1 week</b></td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag">Discipline</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="num">19</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/recruiter/sachin-bagri" target="_blank" rel="noopener">Sachin Bagri</a></div>
+              <div class="meta">Solo · global span</div>
+            </td>
+            <td>US ↔ India ↔ Brazil · engineering</td>
+            <td class="hard-data">Multi-country placements (Aspire India, Truewind Brazil)</td>
+            <td class="tag-cell">
+              <span class="tag lead">Portable</span>
+              <span class="tag">Speed</span>
+            </td>
+          </tr>
+          <tr class="outlier">
+            <td class="num">20</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/how-cameron-barnette-placed-an-engineer-in-under-30-days" target="_blank" rel="noopener">Cameron Barnette</a></div>
+              <div class="meta">Take-Off Recruiting · <strong>tech layoff</strong></div>
+            </td>
+            <td>US · zero prior recruiting exp</td>
+            <td class="hard-data"><b>$20k billed in first 30 days</b> from zero</td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag missing">– Portable</span>
+            </td>
+          </tr>
+          <tr class="outlier">
+            <td class="num">21</td>
+            <td>
+              <div class="name"><a href="https://www.paraform.com/blog/shantanu-desai" target="_blank" rel="noopener">Shantanu Desai</a></div>
+              <div class="meta">Solo · career switcher</div>
+            </td>
+            <td>US · ex-Account Exec</td>
+            <td class="hard-data">First hire <b>in 4–5 weeks</b> from zero</td>
+            <td class="tag-cell">
+              <span class="tag lead">HM Empathy</span>
+              <span class="tag missing">– Portable</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-note">
+      <span class="swatch complete">&nbsp;</span> Cheri = the only recruiter who leads with all four traits. The aspirational profile.
+      <br>
+      <span class="swatch outlier">&nbsp;</span> Shantanu + Cameron = career-switchers with no Portable Advantage. <strong>2-of-21 — that's a pattern, not anomaly.</strong> Section 03 unpacks why.
+    </div>
+
+    <div class="pullquote">
+      <p class="quote">
+        "During the 2022 and 2023 wave of tech layoffs, we saw <span class="hl">100,000 recruiters laid off,</span> driving many recruiters to go independent and start their own recruiting business. This has left many independent recruiters with valuable skill sets and high-quality networks available and open to new ways of working."
+      </p>
+      <div class="attr">
+        <strong>John Kim</strong> · CEO, Paraform · <a href="https://techcrunch.com/2024/04/15/paraform-a-recruiting-platform-that-connects-recruiters-and-startups-raises-funding/" target="_blank" rel="noopener">TechCrunch interview ↗</a>
+      </div>
+    </div>
+
+    <p style="font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 760px; margin-top: -8px;">
+      → The Paraform CEO has named his own ICP: laid-off in-house recruiters who pivoted independent. That maps almost exactly onto the dominant archetype the data surfaces (A4 · ~48% of population). The framework below isn't fighting the founder thesis — it's adding 3 satellite archetypes around it.
+    </p>
+
+    <div class="pullquote">
+      <p class="quote">
+        "Even though I wasn't getting hires yet, I was <span class="hl">submitting standout candidates</span> and I think that made an impact on my ability to be seen as a strong recruiter for companies."
+      </p>
+      <div class="attr">
+        <strong>Cheri Muhle</strong> · Kruger Recruiting · <a href="https://www.paraform.com/blog/how-cheri-made-2-placements-in-1-week-on-paraform" target="_blank" rel="noopener">read full story ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 TRAITS -->
+  <section class="section" id="traits">
+    <div class="sec-num">02 / Framework</div>
+    <h2 class="sec-title">Four traits emerged. <em>None</em> are necessary alone — together they stack.</h2>
+
+    <div class="traits">
+
+      <div class="trait wide">
+        <div class="role">→ Trait 01 · the operating skill (lead trait for 8 of 21)</div>
+        <h4>Hiring-Manager <em>Empathy</em></h4>
+        <p class="def">Treat the HM's actual need as the unit of work — not the JD on paper.</p>
+        <ul class="ev">
+          <li><a href="https://www.paraform.com/blog/how-cheri-made-2-placements-in-1-week-on-paraform" target="_blank" rel="noopener">Cheri</a>: "Listening to the hiring manager. Over-communicate, over-understand the position."</li>
+          <li><a href="https://www.paraform.com/blog/how-an-agency-recruiter-secured-off-market-candidates-more-clients-and-52k-in-bonus-earnings" target="_blank" rel="noopener">Grecia</a>: "I don't fluff it up. I'm direct" — HM-grade English to passive candidates.</li>
+          <li><a href="https://www.paraform.com/blog/how-continuity-partners-made-22-hires-in-1-year-through-paraformRetry" target="_blank" rel="noopener">John Keenan</a>: "Anyone can spot a founding engineer from MIT. We help spot the candidates most recruiters overlook."</li>
+        </ul>
+      </div>
+
+      <div class="trait">
+        <div class="role">→ Trait 02 · the precondition (19 of 21)</div>
+        <h4>Portable <em>Advantage</em></h4>
+        <p class="def">Bring something the platform can't manufacture — niche, geography, or operator credibility.</p>
+        <ul class="ev">
+          <li><a href="https://www.paraform.com/blog/finding-the-right-niche-as-a-recruiter" target="_blank" rel="noopener">Louis</a>: hardtech specialist — automotive, EV, batteries, semis.</li>
+          <li><a href="https://www.paraform.com/blog/uk-recruiter-made-7-hires-in-2-months-on-track-to-be-paraform-s-first-millionaire" target="_blank" rel="noopener">Neil</a> / <a href="https://www.paraform.com/blog/solo-recruiter-uses-paraform-to-grow-recruitment-agency" target="_blank" rel="noopener">Jose</a>: UK/LATAM geo arbitrage.</li>
+          <li><a href="https://www.paraform.com/blog/how-marcus-uses-ai-to-be-a-10x-recruiter" target="_blank" rel="noopener">Marcus</a>: ex-Head-of-Recruiting at Reddit + RevenueCat.</li>
+        </ul>
+      </div>
+
+      <div class="trait">
+        <div class="role">→ Trait 03 · the throughput multiplier (lead trait for 4 of 21)</div>
+        <h4>Speed of <em>Loop</em></h4>
+        <p class="def">Hot loops with HMs and candidates — measured in hours, not weeks.</p>
+        <ul class="ev">
+          <li><a href="https://www.paraform.com/blog/areeb-s-rapid-growth-on-paraform-and-making-usd140k-by-putting-candidates-first" target="_blank" rel="noopener">Areeb</a>: first interview "within hours" via direct HM Slack.</li>
+          <li><a href="https://www.paraform.com/blog/uk-recruiter-made-7-hires-in-2-months-on-track-to-be-paraform-s-first-millionaire" target="_blank" rel="noopener">Neil</a>: 7 placements in 2 months from a standing start.</li>
+          <li><a href="https://talentcollective.substack.com/p/how-paraform-empowers-independent" target="_blank" rel="noopener">Nina</a>: Sr Fullstack placed at Spatial Labs in 2 weeks.</li>
+        </ul>
+      </div>
+
+      <div class="trait wide">
+        <div class="role">→ Trait 04 · the elite gate (enforced by platform tier system)</div>
+        <h4>Quality-First <em>Discipline</em></h4>
+        <p class="def">Submit fewer, better. Earn invite-only access through signal, not volume.</p>
+        <ul class="ev">
+          <li><a href="https://www.paraform.com/blog/how-cheri-made-2-placements-in-1-week-on-paraform" target="_blank" rel="noopener">Cheri</a>: built reputation by submitting standout candidates <em>before</em> any hires landed.</li>
+          <li><a href="https://www.paraform.com/blog/how-one-recruiter-s-paraform-submissions-earned-him-24k-of-extra-income" target="_blank" rel="noopener">Nick</a>: "Less really is more" — $24k/mo on a low-volume side hustle.</li>
+          <li><a href="https://www.paraform.com/help/article/preferred-recruiter-status" target="_blank" rel="noopener">Platform tier system</a>: requires 60% interview rate + 2.8/5 candidate rating for Preferred (top 5%).</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="pullquote">
+      <p class="quote">
+        "Paraform <span class="hl">completely changed what I thought was possible.</span> Hitting revenue targets this quickly means I'm even thinking about hiring our first employee sooner than I expected."
+      </p>
+      <div class="attr">
+        <strong>Neil Patel</strong> · inkorp · UK → US recruiter · <a href="https://www.paraform.com/blog/uk-recruiter-made-7-hires-in-2-months-on-track-to-be-paraform-s-first-millionaire" target="_blank" rel="noopener">read full story ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 EDGE CASE -->
+  <section class="section" id="edge">
+    <div class="sec-num">03 / Edge Case</div>
+    <h2 class="sec-title">The 2-of-21 who <em>sharpen</em> the framework.</h2>
+
+    <div class="edge">
+      <span class="tag-top">→ Career switchers · Shantanu + Cameron</span>
+      <h3>Zero portable advantage. <em>Both made hires inside 5 weeks.</em></h3>
+
+      <p>Two recruiters in the dataset have no recruiting background at all. <strong>Shantanu</strong> was a Tech Account Executive — got curious about recruiting, signed up, made his first hire in 4-5 weeks. <strong>Cameron</strong> got laid off in the tech downturn — pivoted to recruiting, billed <b>$20k in 30 days</b> on Paraform from a standing start. Same pattern, twice.</p>
+
+      <p>By the framework, both shouldn't have succeeded. By the data, both did — and quickly. <b>This isn't an anomaly anymore. It's a documented platform thesis.</b></p>
+
+      <div class="pullquote" style="margin: 16px 0; background: #f9f6ee; padding: 18px 24px;">
+        <p class="quote" style="font-size: 18px;">
+          "When it comes to sourcing, my number one tip would be just to <span class="hl">read what the hiring manager included in the Paraform listings well.</span> It seems like they put a lot of effort into those, so I just did exactly what was on there."
+        </p>
+        <div class="attr">
+          <strong>Shantanu Desai</strong> · career-switcher · <a href="https://www.paraform.com/blog/shantanu-desai" target="_blank" rel="noopener">read full story ↗</a>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <h5>What this means for the framework</h5>
+          <p>Portable Advantage is the strongest <b>speed predictor</b> — but not a hard requirement. <b>HM Empathy is the more teachable trait</b>, and the 2 career-switchers prove a motivated non-recruiter can develop it inside 5 weeks using platform scaffolding.</p>
+        </div>
+        <div>
+          <h5>What this means for Paraform</h5>
+          <p>The platform itself is doing real work. Well-structured JDs + intake call recordings + direct HM lines = scaffolding for non-recruiters to become competent. <b>That's the AI-empowered-recruiter thesis in action — and it just opened a new sourcing channel: laid-off tech workers.</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 ARCHETYPES -->
+  <section class="section" id="archetypes">
+    <div class="sec-num">04 / Archetypes</div>
+    <h2 class="sec-title">From traits to <em>targets</em>: 4 personas to source against.</h2>
+    <p class="sec-sub">Each archetype is grounded in 2–4 real recruiters from the dataset. Each card answers: who they are, where to find them, what pitch converts.</p>
+
+    <div class="archetypes">
+
+      <div class="archetype">
+        <span class="code">A1</span>
+        <h4>The Geographic <em>Arbitrageur</em></h4>
+        <div class="lead-trait">Lead trait: <b>Portable Advantage</b> (geography) · <span style="background: var(--highlight); padding: 0 4px;">4 of 21 · ~19%</span></div>
+        <p class="one-liner">Non-US recruiter with US startup curiosity. Paraform is their BD function — without it, they can't reach US clients.</p>
+
+        <div class="row">
+          <span class="lab">Real examples</span>
+          <a href="https://www.paraform.com/blog/uk-recruiter-made-7-hires-in-2-months-on-track-to-be-paraform-s-first-millionaire" target="_blank" rel="noopener">Neil</a> (UK · inkorp) ·
+          <a href="https://www.paraform.com/blog/uk-recruiters-breaking-into-us-startups" target="_blank" rel="noopener">Cam</a> (UK · Cabana) ·
+          <a href="https://www.paraform.com/blog/solo-recruiter-uses-paraform-to-grow-recruitment-agency" target="_blank" rel="noopener">Jose</a> (LATAM) ·
+          <a href="https://www.paraform.com/blog/areeb-s-rapid-growth-on-paraform-and-making-usd140k-by-putting-candidates-first" target="_blank" rel="noopener">Areeb</a> (Finland)
+        </div>
+
+        <div class="row">
+          <span class="lab">Where to find them</span>
+          LinkedIn — UK/EU/LATAM agency recruiters posting about US tech roles. Local recruitment LinkedIn groups. Reddit r/recruiting threads on cross-border placements.
+        </div>
+
+        <div class="pitch">
+          <strong>Pitch hook</strong>
+          "Access US startups without building US BD. Earn 3-5x what your local market pays — same role, different currency."
+        </div>
+      </div>
+
+      <div class="archetype">
+        <span class="code">A2</span>
+        <h4>The Niche <em>Specialist</em></h4>
+        <div class="lead-trait">Lead trait: <b>Portable Advantage</b> (domain depth) · <span style="background: var(--highlight); padding: 0 4px;">3 of 21 · ~14%</span></div>
+        <p class="one-liner">Domain expert who owns a vertical. When a hardtech / off-market / AI/ML role drops, they're the obvious answer.</p>
+
+        <div class="row">
+          <span class="lab">Real examples</span>
+          <a href="https://www.paraform.com/blog/finding-the-right-niche-as-a-recruiter" target="_blank" rel="noopener">Louis</a> (hardtech · Benchmark Group) ·
+          <a href="https://www.paraform.com/blog/how-an-agency-recruiter-secured-off-market-candidates-more-clients-and-52k-in-bonus-earnings" target="_blank" rel="noopener">Grecia</a> (off-market passives · Recruiting From Scratch) ·
+          <a href="https://www.paraform.com/recruiter/sachin-bagri" target="_blank" rel="noopener">Sachin Bagri</a> (global span: India + Brazil)
+        </div>
+
+        <div class="row">
+          <span class="lab">Where to find them</span>
+          Industry-specific recruiter networks (e.g. hardtech: SAE, IEEE recruiting groups). Niche boutique staffing agencies. LinkedIn — recruiters with a single vertical in their headline.
+        </div>
+
+        <div class="pitch">
+          <strong>Pitch hook</strong>
+          "When the right [hardtech / AI / passive talent] role drops, we want you on it first — invite-only roles, no competing recruiters."
+        </div>
+      </div>
+
+      <div class="archetype">
+        <span class="code">A3</span>
+        <h4>The Defected <em>Operator</em></h4>
+        <div class="lead-trait">Lead trait: <b>Portable Advantage</b> (credibility) · <span style="background: var(--highlight); padding: 0 4px;">3 of 21 · ~14%</span></div>
+        <p class="one-liner">Ex-in-house head of recruiting from a known startup. Operator-grade judgment + portable network. Trusted by HMs on day one.</p>
+
+        <div class="row">
+          <span class="lab">Real examples</span>
+          <a href="https://www.paraform.com/blog/how-marcus-uses-ai-to-be-a-10x-recruiter" target="_blank" rel="noopener">Marcus</a> (ex-Reddit, ex-RevenueCat) ·
+          <a href="https://www.paraform.com/blog/how-continuity-partners-made-22-hires-in-1-year-through-paraformRetry" target="_blank" rel="noopener">John Keenan</a> (built Palantir NYC) ·
+          <a href="https://www.paraform.com/blog/how-freelance-recruiting-saved-olga-from-burnout" target="_blank" rel="noopener">Olga</a> (ex-ClassPass, Goldman, Chief)
+        </div>
+
+        <div class="row">
+          <span class="lab">Where to find them</span>
+          LinkedIn — ex-Heads of Talent / Recruiting at YC, Sequoia, a16z alumni. People with 1+ year of "advisor" titles on their profile. RevOps + recruiting leadership Slacks.
+        </div>
+
+        <div class="pitch">
+          <strong>Pitch hook</strong>
+          "Skip the in-house grind. Same network, no headcount politics, 3-5x earnings. Start with one role, no commitment."
+        </div>
+      </div>
+
+      <div class="archetype">
+        <span class="code">A4</span>
+        <h4>The Veteran <em>Independent</em></h4>
+        <div class="lead-trait">Lead trait: <b>HM Empathy + Discipline</b> · <span style="background: var(--accent); color: var(--paper); padding: 1px 6px; font-weight: 700;">9 of 21 · ~43% · DOMINANT</span></div>
+        <p class="one-liner">Experienced recruiter running their own agency / freelance. Portable rolodex. HM-grade judgment. Struggling with BD overhead.</p>
+
+        <div class="row">
+          <span class="lab">Real examples (9 total — sample shown)</span>
+          <a href="https://www.paraform.com/blog/how-cheri-made-2-placements-in-1-week-on-paraform" target="_blank" rel="noopener">Cheri</a> (Kruger · 15 yrs) ·
+          <a href="https://www.paraform.com/blog/rfs" target="_blank" rel="noopener">Will Sanders</a> (RFS · 36 placements · <strong>Premier Club</strong>) ·
+          <a href="https://www.paraform.com/blog/how-anna-malayan-placed-a-founding-marketer-in-10-days" target="_blank" rel="noopener">Anna Malayan</a> (AccrueTalent) ·
+          <a href="https://www.paraform.com/blog/ken-smith-makes-more-hires" target="_blank" rel="noopener">Ken Smith</a> (25 yrs) ·
+          <a href="https://www.paraform.com/blog/hustle-hunters-paraform-review" target="_blank" rel="noopener">Nikki Adamson</a> (Hustle Hunters · DEIB)
+        </div>
+
+        <div class="row">
+          <span class="lab">Where to find them</span>
+          LinkedIn — independent recruiters with their own LLC in headline. RecOps freelancer Slack channels. Recruiters posting on TikTok about "the agency grind."
+        </div>
+
+        <div class="pitch">
+          <strong>Pitch hook</strong>
+          "Stop doing your own BD. We bring the clients — you bring the candidates. 60% of your week back, 3-5x earnings."
+        </div>
+      </div>
+
+    </div>
+
+    <p style="font-size: 14px; line-height: 1.55; max-width: 760px; color: var(--muted); margin-top: 12px;">
+      <strong style="color: var(--ink);">Read the population sizes carefully:</strong> A4 (Veteran Independent) is ~43% of analyzed recruiters — nearly half. That's not a coincidence; it's <strong style="color: var(--ink);">exactly the ICP John Kim names in his TechCrunch interview</strong> (laid-off in-house recruiters who pivoted independent). The other 3 archetypes are smaller satellite populations Paraform discovers, not actively sources. <em>Implication: source A4 first, source A1–A3 in batches for diversification.</em>
+    </p>
+  </section>
+
+  <!-- 05 IMPLICATIONS -->
+  <section class="section" id="so-what">
+    <div class="sec-num">05 / Implications</div>
+    <h2 class="sec-title">Two GTM moves that <em>follow</em> from the framework.</h2>
+
+    <div class="so-what">
+      <h3>Stop sourcing for one profile. <em>Source against the 4 archetypes — and screen for the rare trait.</em></h3>
+      <div class="so-what-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="so-what-item">
+          <div class="num">→ 01</div>
+          <h4>Screen for HM Empathy, not tenure.</h4>
+          <p>The rare-and-teachable trait. Test in the recruiter application: give a sample JD, ask for the candidate brief they'd send. Shantanu's success says you can teach the rest.</p>
+        </div>
+        <div class="so-what-item">
+          <div class="num">→ 02</div>
+          <h4>Run batched outbound, one archetype at a time.</h4>
+          <p>Don't source generically. Q1 = batch the Arbitrageurs (UK/LATAM LinkedIn). Q2 = batch the Defected Operators (ex-Heads-of-Talent). Each batch has a distinct channel + pitch — built into Section 04.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOURCES (collapsible) -->
+  <details class="sources">
+    <summary><strong>Sources &amp; methodology · 21 recruiter stories analyzed</strong> <span class="hint">click to expand ↓</span></summary>
+    <ul>
+      <li><span class="who">All stories index ·</span><a href="https://www.paraform.com/blog/category/recruiter-stories" target="_blank" rel="noopener">paraform.com/blog/category/recruiter-stories</a></li>
+      <li><span class="who">01 · Cheri ·</span><a href="https://www.paraform.com/blog/how-cheri-made-2-placements-in-1-week-on-paraform" target="_blank" rel="noopener">2 placements in 1 week</a></li>
+      <li><span class="who">02 · Neil ·</span><a href="https://www.paraform.com/blog/uk-recruiter-made-7-hires-in-2-months-on-track-to-be-paraform-s-first-millionaire" target="_blank" rel="noopener">7 hires in 2 months</a></li>
+      <li><span class="who">03 · Grecia ·</span><a href="https://www.paraform.com/blog/how-an-agency-recruiter-secured-off-market-candidates-more-clients-and-52k-in-bonus-earnings" target="_blank" rel="noopener">$52k in bonus earnings</a></li>
+      <li><span class="who">04 · John Keenan ·</span><a href="https://www.paraform.com/blog/how-continuity-partners-made-22-hires-in-1-year-through-paraformRetry" target="_blank" rel="noopener">22 hires in 1 year</a></li>
+      <li><span class="who">05 · Louis ·</span><a href="https://www.paraform.com/blog/finding-the-right-niche-as-a-recruiter" target="_blank" rel="noopener">Finding the right niche</a></li>
+      <li><span class="who">06 · Marcus ·</span><a href="https://www.paraform.com/blog/how-marcus-uses-ai-to-be-a-10x-recruiter" target="_blank" rel="noopener">10x recruiter with AI</a></li>
+      <li><span class="who">07 · Cam ·</span><a href="https://www.paraform.com/blog/uk-recruiters-breaking-into-us-startups" target="_blank" rel="noopener">UK recruiters breaking into US startups</a></li>
+      <li><span class="who">08 · Jose ·</span><a href="https://www.paraform.com/blog/solo-recruiter-uses-paraform-to-grow-recruitment-agency" target="_blank" rel="noopener">Solo recruiter scaling agency</a></li>
+      <li><span class="who">09 · Nick ·</span><a href="https://www.paraform.com/blog/how-one-recruiter-s-paraform-submissions-earned-him-24k-of-extra-income" target="_blank" rel="noopener">$24k extra income</a></li>
+      <li><span class="who">10 · Areeb ·</span><a href="https://www.paraform.com/blog/areeb-s-rapid-growth-on-paraform-and-making-usd140k-by-putting-candidates-first" target="_blank" rel="noopener">$140k+ rapid growth</a></li>
+      <li><span class="who">11 · Nina ·</span><a href="https://talentcollective.substack.com/p/how-paraform-empowers-independent" target="_blank" rel="noopener">Paraform empowers independent recruiters</a></li>
+      <li><span class="who">12 · Will Sanders ·</span><a href="https://www.paraform.com/blog/rfs" target="_blank" rel="noopener">RFS · 36 placements in 9 months</a></li>
+      <li><span class="who">13 · Olga ·</span><a href="https://www.paraform.com/blog/how-freelance-recruiting-saved-olga-from-burnout" target="_blank" rel="noopener">Freelance recruiting saved Olga from burnout</a></li>
+      <li><span class="who">14 · Anna Malayan ·</span><a href="https://www.paraform.com/blog/how-anna-malayan-placed-a-founding-marketer-in-10-days" target="_blank" rel="noopener">Founding marketer at Pylon in 10 days</a></li>
+      <li><span class="who">15 · Katelyn Ewe ·</span><a href="https://www.paraform.com/blog/how-katelyn-ewe-made-2-placements-in-1-month" target="_blank" rel="noopener">2 founding engineers in 1 month</a></li>
+      <li><span class="who">16 · Luis Pedemonte ·</span><a href="https://www.paraform.com/blog/how-luis-placed-a-head-of-marketing-in-3-weeks-with-paraform" target="_blank" rel="noopener">Head of Marketing in 3 weeks</a></li>
+      <li><span class="who">17 · Ken Smith ·</span><a href="https://www.paraform.com/blog/ken-smith-makes-more-hires" target="_blank" rel="noopener">Stopped wasting time on admin</a></li>
+      <li><span class="who">18 · Nikki Adamson ·</span><a href="https://www.paraform.com/blog/hustle-hunters-paraform-review" target="_blank" rel="noopener">Hustle Hunters · 1-week trust</a></li>
+      <li><span class="who">19 · Sachin Bagri ·</span><a href="https://www.paraform.com/recruiter/sachin-bagri" target="_blank" rel="noopener">Sachin Bagri profile</a></li>
+      <li><span class="who">20 · Cameron ·</span><a href="https://www.paraform.com/blog/how-cameron-barnette-placed-an-engineer-in-under-30-days" target="_blank" rel="noopener">$20k/month after tech layoff</a></li>
+      <li><span class="who">21 · Shantanu ·</span><a href="https://www.paraform.com/blog/shantanu-desai" target="_blank" rel="noopener">First hire on Paraform</a></li>
+      <li><span class="who">Tier system ·</span><a href="https://www.paraform.com/help/article/preferred-recruiter-status" target="_blank" rel="noopener">Preferred Recruiter Status</a></li>
+      <li><span class="who">Founder ICP quote ·</span><a href="https://techcrunch.com/2024/04/15/paraform-a-recruiting-platform-that-connects-recruiters-and-startups-raises-funding/" target="_blank" rel="noopener">TechCrunch interview with John Kim</a></li>
+      <li><span class="who">Premier Club roster ·</span><a href="https://www.paraform.com/blog/Gala" target="_blank" rel="noopener">1st Annual Paraform Recruiter Gala</a></li>
+      <li><span class="who">Series B funding ·</span><a href="https://hrtechfeed.com/recruiting-platform-paraform-has-raised-40-million-in-series-b/" target="_blank" rel="noopener">$40M Series B · March 2026</a></li>
+    </ul>
+    <div class="method-block">
+      <strong>Methodology</strong>
+      <p>
+        Paraform's blog has <b>32 individual recruiter stories</b> in its Recruiter Stories category (plus 8 event/thought-leadership posts not analyzed). I analyzed <b>21 of 32 (~66%)</b> — selected to span all 4 archetypes plus the career-switcher edge case. The remaining 11 stories were inspected by title and headline; all appear to be variants of Archetype A4 (Veteran Independent) — meaning my framework would likely be reinforced, not changed, by including them. Population estimates (~43% A4 etc.) should be read as <em>directional, not statistically precise</em>. With more time the move would be: pull all 32, weight by hard-data outcomes (placements × revenue), and stress-test the 4-archetype split.
+      </p>
+    </div>
+  </details>
+
+  <footer class="footer">
+    <div>Paraform Case Study · Part 01 · Recruiter ICP</div>
+    <div><a href="part2_candidate_eval.html">→ Continue to Part 02: Pipeline Evaluation</a></div>
+  </footer>
+
+</div>
+
+<a href="#" class="back-top" aria-label="Back to top">↑</a>
+
+</body>
+</html>
